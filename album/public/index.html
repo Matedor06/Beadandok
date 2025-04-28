@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Kollekció</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <h1>🎵 Album Kollekció</h1>
+        <button class="theme-switch" id="themeSwitch">🌙 Téma</button>
+    </header>
+
+    <main>
+        <section class="form-container">
+            <h2>Új Album Hozzáadása</h2>
+            <form id="albumForm">
+                <div class="form-group">
+                    <label for="band">Zenekar:</label>
+                    <input type="text" id="band" placeholder="Pl. Queen" required>
+                </div>
+                <div class="form-group">
+                    <label for="title">Album címe:</label>
+                    <input type="text" id="title" placeholder="Pl. A Night at the Opera" required>
+                </div>
+                <div class="form-group">
+                    <label for="year">Megjelenés éve:</label>
+                    <input type="number" id="year" min="1900" max="2023" placeholder="Pl. 1975" required>
+                </div>
+                <div class="form-group">
+                    <label for="genre">Műfaj:</label>
+                    <input type="text" id="genre" placeholder="Pl. Rock" required>
+                </div>
+                <div class="form-group">
+                    <label for="rating">Értékelés (0-10):</label>
+                    <input type="number" id="rating" min="0" max="10" step="0.1" placeholder="Pl. 9.5">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelBtn" style="display: none;">Mégse</button>
+                    <button type="submit">Mentés</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="album-grid" id="albumContainer">
+            <!-- Dinamikusan generált albumok ide kerülnek -->
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
