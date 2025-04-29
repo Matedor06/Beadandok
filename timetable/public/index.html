@@ -9,10 +9,10 @@
     <style>
         :root {
             --background-color: #ffffff;
-            --text-color: #333;
-            --card-bg: #f9f9f9;
-            --border-color: #ccc;
-            --form-bg: #fff;
+            --text-color: #222;
+            --card-bg: #ffffff;
+            --border-color: #b0c4de;
+            --form-bg: #e6f7ff;
         }
 
         .dark-theme {
@@ -38,8 +38,8 @@
             cursor: pointer;
             color: var(--text-color);
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border: 2px solid black;
+            border-radius: 0px;
         }
 
         .timetable {
@@ -65,7 +65,11 @@
             position: absolute;
             top: 6px;
             right: 6px;
+            padding: 2px 2%;
             cursor: pointer;
+            color: var(--text-color);
+            background-color: #e0e0e0;
+            border: 2px solid black;
         }
 
         form {
@@ -93,9 +97,9 @@
 </head>
 
 <body>
-    <button class="theme-switch btn btn-secondary" id="themeSwitch">🌓 Téma váltás</button>
+    <button class="theme-switch btn btn-secondary" id="themeSwitch"> Téma váltás</button>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Órarend Szerkesztő</h1>
+        <h1 class="text-center mb-4">Órarend</h1>
 
         <form id="lessonForm" class="p-4 border rounded">
             <div class="mb-3">
@@ -111,7 +115,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="time" class="form-label">Időpont</label>
+                <label for="time" class="form-label">Óra</label>
                 <input type="time" id="time" class="form-control" required>
             </div>
 
@@ -121,7 +125,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="classroom" class="form-label">Terem</label>
+                <label for="classroom" class="form-label">Helység</label>
                 <input type="text" id="classroom" class="form-control" placeholder="Terem">
             </div>
 

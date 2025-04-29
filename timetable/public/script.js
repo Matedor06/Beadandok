@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     .sort((a, b) => a.time.localeCompare(b.time))
                     .map(lesson => `
                             <div class="lesson">
-                                <span class="delete-btn" onclick="deleteLesson('${lesson.id}')">🗑️</span>
+                                <span class="delete-btn" onclick="deleteLesson('${lesson.id}')">Törlés</span>
                                 <div><strong>${lesson.time}</strong></div>
                                 <div>${lesson.subject}</div>
                                 ${lesson.classroom ? `<div>${lesson.classroom}</div>` : ''}
