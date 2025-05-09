@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Kollekció</title>
+    <style>
+        :root {
+    --bg-color: #f9f9f9;
+    --text-color: #222;
+    --card-bg: #ffffff;
+    --border-color: #ccc;
+    --input-bg: #fefefe;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --primary-color: #007BFF;
+    --danger-color: #dc3545;
+}
+
+.dark-theme {
+    --bg-color: #121212;
+    --text-color: #eaeaea;
+    --card-bg: #1e1e1e;
+    --border-color: #333;
+    --input-bg: #2c2c2c;
+    --shadow-color: rgba(255, 255, 255, 0.05);
+    --primary-color: #0d6efd;
+    --danger-color: #ff4d4f;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.theme-switch {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 8px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+.theme-switch:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.album-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.album-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px var(--shadow-color);
+}
+
+.form-container {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    margin-bottom: 40px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+input,
+select {
+    width: 100%;
+    padding: 8px 10px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+button[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+}
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+#cancelBtn {
+    background-color: var(--border-color);
+    color: var(--text-color);
+}
+#cancelBtn:hover {
+    background-color: #999;
+}
+.delete-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+.delete-btn:hover {
+    background-color: #c82333;
+}
+    </style>
+</head>
+
+<body> <button class="theme-switch" id="themeSwitch">🌓 Téma</button>
+    <h1>Album Kollekció</h1>
+
+    <div class="form-container">
+        <h2 id="form-title">Új Album Hozzáadása</h2>
+        <form id="albumForm">
+            <input type="hidden" id="albumId">
+            <div class="form-group">
+                <label for="band">Zenekar:</label>
+                <input type="text" id="band" required>
+            </div>
+            <div class="form-group">
+                <label for="title">Album címe:</label>
+                <input type="text" id="title" required>
+            </div>
+            <div class="form-group">
+                <label for="year">Megjelenés éve:</label>
+                <input type="number" id="year" min="1900" max="2023" required>
+            </div>
+            <div class="form-group">
+                <label for="genre">Műfaj:</label>
+                <input type="text" id="genre" required>
+            </div>
+            <div class="form-group">
+                <label for="rating">Értékelés (0-10):</label>
+                <input type="number" id="rating" min="0" max="10" step="0.1">
+            </div>
+            <div class="form-actions">
+                <button type="button" id="cancelBtn" style="display: none;">Mégse</button>
+                <button type="submit">Mentés</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="album-grid" id="albumContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
