@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Kezelő</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌟 Blog Kezelő</h1>
+            <p>Kezeld a blog bejegyzéseidet egyszerűen!</p>
+        </header>
+
+        <!-- Create/Edit Post Form -->
+        <section class="form-section">
+            <h2 id="form-title">Új Blogbejegyzés Létrehozása</h2>
+            <form id="post-form">
+                <input type="hidden" id="post-id">
+                  <div class="form-group">
+                    <label for="author">Szerző:</label>
+                    <input type="text" id="author" required placeholder="Add meg a szerző nevét">
+                </div>
+
+                <div class="form-group">
+                    <label for="title">Cím:</label>
+                    <input type="text" id="title" required placeholder="Add meg a blogbejegyzés címét">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Kategória:</label>
+                    <select id="category" required>
+                        <option value="">Válassz kategóriát...</option>
+                        <option value="Személyes">Személyes</option>
+                        <option value="Technológia">Technológia</option>
+                        <option value="Utazás">Utazás</option>
+                        <option value="Kultúra">Kultúra</option>
+                        <option value="Gasztronómia">Gasztronómia</option>
+                        <option value="Egészség">Egészség</option>
+                        <option value="Sport">Sport</option>
+                        <option value="Oktatás">Oktatás</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">Tartalom:</label>
+                    <textarea id="content" required placeholder="Írd meg a blogbejegyzés tartalmát..." rows="8"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="submit-btn">Létrehozás</button>
+                    <button type="button" id="cancel-btn" style="display: none;">Mégse</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Blog Posts List -->
+        <section class="posts-section">
+            <h2>📝 Blogbejegyzések</h2>
+            <div id="loading" class="loading">Betöltés...</div>
+            <div id="posts-container" class="posts-grid"></div>
+        </section>
+    </div>
+
+    <!-- Modal for confirmation -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3>Megerősítés</h3>
+            <p id="modal-message"></p>
+            <div class="modal-actions">
+                <button id="modal-confirm" class="btn btn-danger">Törlés</button>
+                <button id="modal-cancel" class="btn">Mégse</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
