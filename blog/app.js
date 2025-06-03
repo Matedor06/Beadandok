@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import db from './util/database.js';
+import { blogPostOperations, userOperations } from './util/database.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,143 +20,107 @@ app.use(express.static('public'));
 // Get all blog posts with author information
 app.get('/api/posts', (req, res) => {
   try {
-    const posts = db.prepare(`
-      SELECT 
-        id, 
-        title, 
-        category, 
-        content, 
-        created_at, 
-        updated_at,
-        author_name
-      FROM blog_posts
-      ORDER BY updated_at DESC
-    `).all();
+    const posts = blogPostOperations.getAll();
     res.json(posts);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch posts' });
+    res.status(500).json({ error: error.message });
   }
 });
 
 // Get single blog post
 app.get('/api/posts/:id', (req, res) => {
   try {
-    const post = db.prepare(`
-      SELECT 
-        id, 
-        title, 
-        category, 
-        content, 
-        created_at, 
-        updated_at,
-        author_name
-      FROM blog_posts
-      WHERE id = ?
-    `).get(req.params.id);
+    const post = blogPostOperations.getById(req.params.id);
     
     if (!post) {
       return res.status(404).json({ error: 'Post not found' });
     }
     res.json(post);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch post' });
+    res.status(500).json({ error: error.message });
   }
 });
 
 // Create new blog post
 app.post('/api/posts', (req, res) => {
   try {
-    const { author_name, title, category, content } = req.body;
+    const { user_id, title, category, content } = req.body;
     
-    if (!author_name || !title || !category || !content) {
+    if (!user_id || !title || !category || !content) {
       return res.status(400).json({ error: 'All fields are required' });
     }
     
-    const result = db.prepare(`
-      INSERT INTO blog_posts (author_name, title, category, content, created_at, updated_at)
-      VALUES (?, ?, ?, ?, datetime('now'), datetime('now'))
-    `).run(author_name, title, category, content);
-    
-    const newPost = db.prepare(`
-      SELECT 
-        id, 
-        title, 
-        category, 
-        content, 
-        created_at, 
-        updated_at,
-        author_name
-      FROM blog_posts
-      WHERE id = ?
-    `).get(result.lastInsertRowid);
-    
+    const newPost = blogPostOperations.create(user_id, title, category, content);
     res.status(201).json(newPost);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create post' });
+    res.status(500).json({ error: error.message });
   }
 });
 
 // Update blog post
 app.put('/api/posts/:id', (req, res) => {
   try {
-    const { author_name, title, category, content } = req.body;
+    const { user_id, title, category, content } = req.body;
     const postId = req.params.id;
     
-    if (!author_name || !title || !category || !content) {
+    if (!user_id || !title || !category || !content) {
       return res.status(400).json({ error: 'All fields are required' });
     }
     
-    const result = db.prepare(`
-      UPDATE blog_posts 
-      SET author_name = ?, title = ?, category = ?, content = ?, updated_at = datetime('now')
-      WHERE id = ?
-    `).run(author_name, title, category, content, postId);
+    const updatedPost = blogPostOperations.update(postId, user_id, title, category, content);
     
-    if (result.changes === 0) {
+    if (!updatedPost) {
       return res.status(404).json({ error: 'Post not found' });
     }
     
-    const updatedPost = db.prepare(`
-      SELECT 
-        id, 
-        title, 
-        category, 
-        content, 
-        created_at, 
-        updated_at,
-        author_name
-      FROM blog_posts
-      WHERE id = ?
-    `).get(postId);
-    
     res.json(updatedPost);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update post' });
+    res.status(500).json({ error: error.message });
   }
 });
 
 // Delete blog post
 app.delete('/api/posts/:id', (req, res) => {
   try {
-    const result = db.prepare('DELETE FROM blog_posts WHERE id = ?').run(req.params.id);
+    const success = blogPostOperations.delete(req.params.id);
     
-    if (result.changes === 0) {
+    if (!success) {
       return res.status(404).json({ error: 'Post not found' });
     }
     
     res.json({ message: 'Post deleted successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete post' });
+    res.status(500).json({ error: error.message });
   }
 });
 
 // Get all users
 app.get('/api/users', (req, res) => {
   try {
-    const users = db.prepare('SELECT id, name, email FROM users ORDER BY name').all();
+    const users = userOperations.getAll();
     res.json(users);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch users' });
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Create new user
+app.post('/api/users', (req, res) => {
+  try {
+    const { name, email } = req.body;
+    
+    if (!name || !email) {
+      return res.status(400).json({ error: 'Name and email are required' });
+    }
+    
+    const newUser = userOperations.create(name, email);
+    res.status(201).json(newUser);
+  } catch (error) {
+    if (error.code === 'EMAIL_EXISTS') {
+      res.status(400).json({ error: 'Email already exists' });
+    } else {
+      res.status(500).json({ error: error.message });
+    }
   }
 });
 

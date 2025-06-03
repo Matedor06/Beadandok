@@ -6,61 +6,130 @@
     <title>Blog Kezelő</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container">
+<body>    <div class="container">
         <header>
             <h1>🌟 Blog Kezelő</h1>
-            <p>Kezeld a blog bejegyzéseidet egyszerűen!</p>
-        </header>
+            <p>Kezeld a blog bejegyzéseidet és felhasználóidat egyszerűen!</p>
+        </header>        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-button active" onclick="showTab('posts')">📝 Új Bejegyzés</button>
+            <button class="tab-button" onclick="showTab('view')">👁️ Megtekintés</button>
+            <button class="tab-button" onclick="showTab('users')">👥 Felhasználók</button>
+        </div>        <!-- Posts Tab -->
+        <div id="posts-tab" class="tab-content active">
+            <!-- Create/Edit Post Form -->
+            <section class="form-section">
+                <h2 id="form-title">Új Blogbejegyzés Létrehozása</h2>
+                <form id="post-form">
+                    <input type="hidden" id="post-id">
+                    <div class="form-group">
+                        <label for="author-select">Szerző:</label>
+                        <select id="author-select" required>
+                            <option value="">Válassz szerzőt...</option>
+                        </select>
+                    </div>
 
-        <!-- Create/Edit Post Form -->
-        <section class="form-section">
-            <h2 id="form-title">Új Blogbejegyzés Létrehozása</h2>
-            <form id="post-form">
-                <input type="hidden" id="post-id">
-                  <div class="form-group">
-                    <label for="author">Szerző:</label>
-                    <input type="text" id="author" required placeholder="Add meg a szerző nevét">
+                    <div class="form-group">
+                        <label for="title">Cím:</label>
+                        <input type="text" id="title" required placeholder="Add meg a blogbejegyzés címét">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Kategória:</label>
+                        <select id="category" required>
+                            <option value="">Válassz kategóriát...</option>
+                            <option value="Személyes">Személyes</option>
+                            <option value="Technológia">Technológia</option>
+                            <option value="Utazás">Utazás</option>
+                            <option value="Kultúra">Kultúra</option>
+                            <option value="Gasztronómia">Gasztronómia</option>
+                            <option value="Egészség">Egészség</option>
+                            <option value="Sport">Sport</option>
+                            <option value="Oktatás">Oktatás</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">Tartalom:</label>
+                        <textarea id="content" required placeholder="Írd meg a blogbejegyzés tartalmát..." rows="8"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="submit-btn">Létrehozás</button>
+                        <button type="button" id="cancel-btn" style="display: none;">Mégse</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <!-- View Tab -->
+        <div id="view-tab" class="tab-content">
+            <!-- Blog Posts List -->
+            <section class="posts-section">
+                <h2>👁️ Blogbejegyzések Megtekintése</h2>
+                
+                <!-- Filter and Search -->
+                <div class="filter-section">
+                    <div class="filter-row">
+                        <div class="search-group">
+                            <input type="text" id="search-input" placeholder="Keresés cím vagy tartalom alapján...">
+                            <button id="search-btn" class="btn btn-search">🔍 Keresés</button>
+                        </div>
+                        <div class="filter-group">
+                            <select id="category-filter">
+                                <option value="">Minden kategória</option>
+                                <option value="Személyes">Személyes</option>
+                                <option value="Technológia">Technológia</option>
+                                <option value="Utazás">Utazás</option>
+                                <option value="Kultúra">Kultúra</option>
+                                <option value="Gasztronómia">Gasztronómia</option>
+                                <option value="Egészség">Egészség</option>
+                                <option value="Sport">Sport</option>
+                                <option value="Oktatás">Oktatás</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select id="author-filter">
+                                <option value="">Minden szerző</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="title">Cím:</label>
-                    <input type="text" id="title" required placeholder="Add meg a blogbejegyzés címét">
-                </div>
+                <div id="loading" class="loading">Betöltés...</div>
+                <div id="posts-container" class="posts-grid"></div>
+            </section>
+        </div>
 
-                <div class="form-group">
-                    <label for="category">Kategória:</label>
-                    <select id="category" required>
-                        <option value="">Válassz kategóriát...</option>
-                        <option value="Személyes">Személyes</option>
-                        <option value="Technológia">Technológia</option>
-                        <option value="Utazás">Utazás</option>
-                        <option value="Kultúra">Kultúra</option>
-                        <option value="Gasztronómia">Gasztronómia</option>
-                        <option value="Egészség">Egészség</option>
-                        <option value="Sport">Sport</option>
-                        <option value="Oktatás">Oktatás</option>
-                    </select>
-                </div>
+        <!-- Users Tab -->
+        <div id="users-tab" class="tab-content">
+            <!-- Create User Form -->
+            <section class="form-section">
+                <h2>Új Felhasználó Létrehozása</h2>
+                <form id="user-form">
+                    <div class="form-group">
+                        <label for="user-name">Név:</label>
+                        <input type="text" id="user-name" required placeholder="Add meg a felhasználó nevét">
+                    </div>
 
-                <div class="form-group">
-                    <label for="content">Tartalom:</label>
-                    <textarea id="content" required placeholder="Írd meg a blogbejegyzés tartalmát..." rows="8"></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="user-email">Email:</label>
+                        <input type="email" id="user-email" required placeholder="Add meg az email címet">
+                    </div>
 
-                <div class="form-actions">
-                    <button type="submit" id="submit-btn">Létrehozás</button>
-                    <button type="button" id="cancel-btn" style="display: none;">Mégse</button>
-                </div>
-            </form>
-        </section>
+                    <div class="form-actions">
+                        <button type="submit" id="user-submit-btn">Felhasználó Létrehozása</button>
+                    </div>
+                </form>
+            </section>
 
-        <!-- Blog Posts List -->
-        <section class="posts-section">
-            <h2>📝 Blogbejegyzések</h2>
-            <div id="loading" class="loading">Betöltés...</div>
-            <div id="posts-container" class="posts-grid"></div>
-        </section>
+            <!-- Users List -->
+            <section class="users-section">
+                <h2>👥 Felhasználók</h2>
+                <div id="users-loading" class="loading">Betöltés...</div>
+                <div id="users-container" class="users-grid"></div>
+            </section>
+        </div>
     </div>
 
     <!-- Modal for confirmation -->
