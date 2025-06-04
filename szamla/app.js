@@ -82,6 +82,17 @@ app.get('/api/invoices', (req, res) => {
     });
 });
 
+app.get('/api/invoices/next-number', (req, res) => {
+    db.getNextInvoiceNumber((err, invoiceNumber) => {
+        if (err) {
+            console.error('Error getting next invoice number:', err);
+            res.status(500).json({ error: 'Hiba a következő számlaszám generálása során' });
+            return;
+        }
+        res.json({ invoice_number: invoiceNumber });
+    });
+});
+
 app.get('/api/invoices/:id', (req, res) => {
     const id = req.params.id;
     db.getInvoiceById(id, (err, invoice) => {
@@ -95,17 +106,6 @@ app.get('/api/invoices/:id', (req, res) => {
             return;
         }
         res.json(invoice);
-    });
-});
-
-app.get('/api/invoices/next-number', (req, res) => {
-    db.getNextInvoiceNumber((err, invoiceNumber) => {
-        if (err) {
-            console.error('Error getting next invoice number:', err);
-            res.status(500).json({ error: 'Hiba a következő számlaszám generálása során' });
-            return;
-        }
-        res.json({ invoice_number: invoiceNumber });
     });
 });
 

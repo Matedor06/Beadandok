@@ -208,8 +208,6 @@ async function handleInvoiceSubmit(event) {
         resetInvoiceForm();
         await loadInvoices();
         showTab('invoices');
-    } catch (error) {
-        showToast('Hiba történt a számla létrehozása során: ' + error.message, 'error');
     } finally {
         hideLoading();
     }
@@ -233,8 +231,7 @@ async function handlePartnerSubmit(event) {
         await loadPartners();
         populatePartnerSelects();
         showTab('partners');
-    } catch (error) {
-        showToast('Hiba történt a partner létrehozása során: ' + error.message, 'error');
+
     } finally {
         hideLoading();
     }
