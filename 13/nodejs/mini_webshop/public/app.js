@@ -55,6 +55,20 @@ async function handleAuth(e) {
       token = data.token;
       localStorage.setItem('token', token);
       currentUser = data.user;
+      
+      console.log('Login successful! User data:', currentUser);
+      console.log('Is admin?', currentUser.is_admin);
+      
+      // Show/hide admin link based on user role
+      const adminLink = document.getElementById('admin-link');
+      if (currentUser.is_admin === 1) {
+        console.log('Showing admin link...');
+        adminLink.style.display = 'inline';
+      } else {
+        console.log('User is not admin, hiding admin link');
+        adminLink.style.display = 'none';
+      }
+      
       showMessage('auth-message', data.message, 'success');
       setTimeout(() => {
         loadProducts();
@@ -72,6 +86,10 @@ function logout() {
   token = null;
   currentUser = null;
   localStorage.removeItem('token');
+  
+  // Hide admin link on logout
+  document.getElementById('admin-link').style.display = 'none';
+  
   showPage('auth');
   document.getElementById('auth-form').reset();
 }
@@ -85,9 +103,17 @@ async function loadUserData() {
     if (response.ok) {
       currentUser = await response.json();
       
-      // Show admin link if user is admin
-      if (currentUser.is_admin) {
-        document.getElementById('admin-link').style.display = 'inline';
+      console.log('User data loaded:', currentUser);
+      console.log('Is admin?', currentUser.is_admin);
+      
+      // Show/hide admin link based on user role
+      const adminLink = document.getElementById('admin-link');
+      if (currentUser.is_admin === 1) {
+        console.log('Showing admin link in loadUserData...');
+        adminLink.style.display = 'inline';
+      } else {
+        console.log('User is not admin, hiding admin link');
+        adminLink.style.display = 'none';
       }
       
       loadProducts();
